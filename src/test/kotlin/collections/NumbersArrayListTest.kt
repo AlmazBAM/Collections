@@ -4,7 +4,6 @@ import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
 import kotlin.test.assertEquals
-import kotlin.test.assertFails
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
@@ -40,6 +39,15 @@ class NumbersArrayListTest {
 
     @ParameterizedTest
     @MethodSource("mutableListSource")
+    fun `When add 10 items with operator then size is 10`(list: NumbersArrayList) {
+        repeat(10) {
+            list + it
+        }
+        assertEquals(10, list.size)
+    }
+
+    @ParameterizedTest
+    @MethodSource("mutableListSource")
     fun `When add 1 item into list then size should return 1`(list: NumbersArrayList) {
         repeat(1) {
             list.add(it)
@@ -63,7 +71,7 @@ class NumbersArrayListTest {
             list.add(it)
         }
         list.add(0, 1000)
-        assertEquals(1000, list.get(0))
+        assertEquals(1000, list[0])
     }
 
     @ParameterizedTest
@@ -83,7 +91,7 @@ class NumbersArrayListTest {
             list.add(it)
         }
         list.add(100, 1000)
-        assertEquals(1000, list.get(100))
+        assertEquals(1000, list[100])
     }
 
     @ParameterizedTest
@@ -93,7 +101,7 @@ class NumbersArrayListTest {
             list.add(it)
         }
         list.removeAt(50)
-        assertEquals(51, list.get(50))
+        assertEquals(51, list[50])
     }
 
     @ParameterizedTest
@@ -103,7 +111,17 @@ class NumbersArrayListTest {
             list.add(it)
         }
         list.remove(50)
-        assertEquals(51, list.get(50))
+        assertEquals(51, list[50])
+    }
+
+    @ParameterizedTest
+    @MethodSource("mutableListSource")
+    fun `When value 50 removed with operator then size decreased`(list: NumbersArrayList) {
+        repeat(100) {
+            list.add(it)
+        }
+        list - 50
+        assertEquals(51, list[50])
     }
 
     @ParameterizedTest
@@ -113,7 +131,7 @@ class NumbersArrayListTest {
             list.add(it)
         }
         list.removeAt(50)
-        assertEquals(51, list.get(50))
+        assertEquals(51, list[50])
     }
 
     @ParameterizedTest
@@ -134,7 +152,7 @@ class NumbersArrayListTest {
         }
         list.clear()
         assertThrows<IndexOutOfBoundsException> {
-            list.get(50)
+            list[50]
         }
     }
 
@@ -144,7 +162,7 @@ class NumbersArrayListTest {
         repeat(100) {
             list.add(it)
         }
-        assertEquals(50, list.get(50))
+        assertEquals(50, list[50])
     }
 
     companion object {

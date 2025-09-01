@@ -33,7 +33,10 @@ class NumbersArrayList(
         }
         numbers[index] = number
         size++
+    }
 
+    override fun plus(number: Int) {
+        add(number)
     }
 
     override fun remove(number: Int) {
@@ -54,12 +57,16 @@ class NumbersArrayList(
         numbers[size] = null
     }
 
+    override fun minus(number: Int) {
+        remove(number)
+    }
+
     override fun clear() {
         numbers = arrayOfNulls(10)
         size = 0
     }
 
-    override fun get(index: Int): Int {
+    override operator fun get(index: Int): Int {
         checkIndex(index)
         return numbers[index]!!
     }

@@ -158,6 +158,17 @@ class NumbersArrayListTest {
 
     @ParameterizedTest
     @MethodSource("mutableListSource")
+    fun `When get element with incorrect index element then throw exception`(list: NumbersArrayList) {
+        repeat(100) {
+            list.add(it)
+        }
+        assertThrows<IndexOutOfBoundsException> {
+            list[-1]
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("mutableListSource")
     fun `When get number 50th element then result is correct`(list: NumbersArrayList) {
         repeat(100) {
             list.add(it)

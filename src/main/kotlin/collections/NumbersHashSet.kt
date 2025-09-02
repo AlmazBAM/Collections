@@ -9,7 +9,16 @@ class NumbersHashSet : NumbersMutableSet {
         private set
 
     override fun contains(number: Int): Boolean {
-        TODO("Not yet implemented")
+        val position = getElementPosition(number, elements.size)
+        var existedElement = elements[position]
+        while (existedElement != null) {
+            if (existedElement.item == number) {
+                return true
+            } else {
+                existedElement = existedElement.next
+            }
+        }
+        return false
     }
 
     override fun add(number: Int): Boolean {
@@ -18,17 +27,38 @@ class NumbersHashSet : NumbersMutableSet {
     }
 
     override fun remove(number: Int) {
-        TODO("Not yet implemented")
+        val position = getElementPosition(number, elements.size)
+        val existedElement = elements[position] ?: return
+        if (existedElement.item == number) {
+            val after = existedElement.next
+            if (after == null)
+                elements[position] = null
+            else
+                elements[position] = after
+            size--
+            return
+        }
+        var before: Node? = existedElement
+        while (before?.next != null) {
+            val current = before.next
+            if (current?.item == number) {
+                val after = current.next
+                before.next = after
+                size--
+                return
+            } else {
+                before = before.next
+            }
+        }
     }
 
     override fun clear() {
-        TODO("Not yet implemented")
+        elements = arrayOfNulls<Node>(INITIAL_CAPACITY)
+        size = 0
     }
 
-
-
     private fun increaseSize() {
-        if (size.toFloat() /  elements.size >= LOAD_FACTOR) {
+        if (size.toFloat() / elements.size >= LOAD_FACTOR) {
             val newArray = arrayOfNulls<Node>(elements.size * 2)
             elements.forEach {
                 var currentElement = it

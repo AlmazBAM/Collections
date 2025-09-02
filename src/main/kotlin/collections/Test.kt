@@ -1,15 +1,13 @@
 package collections
 
+import kotlin.random.Random
 import kotlin.time.measureTime
 
 fun main() {
-    val a = NumbersArrayList()
-
-    val time = measureTime {
-        repeat(500_000) {
-            a.add(0, it)
-        }
+    val a = NumbersHashSet()
+    repeat(100) {
+        a.add(Random.nextInt(1000))
     }
 
-    println("time = $time")
+    a.elements.forEach(::println)
 }

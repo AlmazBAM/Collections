@@ -1,45 +1,45 @@
 package collections
 
-class NumbersArrayList(
+class CustomArrayList<T>(
     initialCapacity: Int = INITIAL_CAPACITY.also {
         println("Initialize constructor")
     }
-) : NumbersMutableList {
+) : CustomMutableList<T> {
 
-    private var numbers = arrayOfNulls<Int>(initialCapacity)
+    private var elements = arrayOfNulls<Any>(initialCapacity)
 
     override var size: Int = 0
         private set
 
-    override fun contains(number: Int): Boolean {
-        for (index in numbers.indices) {
-            if (numbers[index] == number)
+    override fun contains(element: T): Boolean {
+        for (index in elements.indices) {
+            if (elements[index] == element)
                 return true
         }
         return false
     }
 
-    override fun add(number: Int) {
+    override fun add(element: T) {
         growIfNeeded()
-        numbers[size] = number
+        elements[size] = element
         size++
     }
 
-    override fun add(index: Int, number: Int) {
+    override fun add(index: Int, element: T) {
         checkIndexForAdding(index)
         growIfNeeded()
-        System.arraycopy(numbers, index, numbers, index + 1, size - index)
-        numbers[index] = number
+        System.arraycopy(elements, index, elements, index + 1, size - index)
+        elements[index] = element
         size++
     }
 
-    override fun plus(number: Int) {
-        add(number)
+    override fun plus(element: T) {
+        add(element)
     }
 
-    override fun remove(number: Int) {
-        for (index in numbers.indices) {
-            if (numbers[index] == number) {
+    override fun remove(element: T) {
+        for (index in elements.indices) {
+            if (elements[index] == element) {
                 removeAt(index)
                 return
             }
@@ -48,23 +48,23 @@ class NumbersArrayList(
 
     override fun removeAt(index: Int) {
         checkIndex(index)
-        System.arraycopy(numbers, index + 1, numbers, index, size - index - 1)
+        System.arraycopy(elements, index + 1, elements, index, size - index - 1)
         size--
-        numbers[size] = null
+        elements[size] = null
     }
 
-    override fun minus(number: Int) {
-        remove(number)
+    override fun minus(element: T) {
+        remove(element)
     }
 
     override fun clear() {
-        numbers = arrayOfNulls(10)
+        elements = arrayOfNulls(10)
         size = 0
     }
 
-    override operator fun get(index: Int): Int {
+    override operator fun get(index: Int): T {
         checkIndex(index)
-        return numbers[index]!!
+        return elements[index]!! as T
     }
 
     private fun checkIndexForAdding(index: Int) {
@@ -78,10 +78,10 @@ class NumbersArrayList(
     }
 
     private fun growIfNeeded() {
-        if (numbers.size == size) {
-            val newArray = arrayOfNulls<Int>(2 * numbers.size)
-            System.arraycopy(numbers, 0, newArray, 0, size)
-            numbers = newArray
+        if (elements.size == size) {
+            val newArray = arrayOfNulls<Any>(2 * elements.size)
+            System.arraycopy(elements, 0, newArray, 0, size)
+            elements = newArray
         }
     }
 

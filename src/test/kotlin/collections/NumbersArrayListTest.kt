@@ -12,7 +12,7 @@ class NumbersArrayListTest {
 
     @ParameterizedTest
     @MethodSource("mutableListSource")
-    fun `When list contains element then return true`(list: NumbersMutableList) {
+    fun `When list contains element then return true`(list: CustomMutableList<Int>) {
         repeat(100) {
             list.add(it)
         }
@@ -21,7 +21,7 @@ class NumbersArrayListTest {
 
     @ParameterizedTest
     @MethodSource("mutableListSource")
-    fun `When list doesn't contains element then return false`(list: NumbersMutableList) {
+    fun `When list doesn't contains element then return false`(list: CustomMutableList<Int>) {
         repeat(10) {
             list.add(it)
         }
@@ -30,7 +30,7 @@ class NumbersArrayListTest {
 
     @ParameterizedTest
     @MethodSource("mutableListSource")
-    fun `When add 10 items then size is 10`(list: NumbersMutableList) {
+    fun `When add 10 items then size is 10`(list: CustomMutableList<Int>) {
         repeat(10) {
             list.add(it)
         }
@@ -39,7 +39,7 @@ class NumbersArrayListTest {
 
     @ParameterizedTest
     @MethodSource("mutableListSource")
-    fun `When add 10 items with operator then size is 10`(list: NumbersMutableList) {
+    fun `When add 10 items with operator then size is 10`(list: CustomMutableList<Int>) {
         repeat(10) {
             list + it
         }
@@ -48,7 +48,7 @@ class NumbersArrayListTest {
 
     @ParameterizedTest
     @MethodSource("mutableListSource")
-    fun `When add 1 item into list then size should return 1`(list: NumbersMutableList) {
+    fun `When add 1 item into list then size should return 1`(list: CustomMutableList<Int>) {
         repeat(1) {
             list.add(it)
         }
@@ -57,7 +57,7 @@ class NumbersArrayListTest {
 
     @ParameterizedTest
     @MethodSource("mutableListSource")
-    fun `When add 100 items then size is 100`(list: NumbersMutableList) {
+    fun `When add 100 items then size is 100`(list: CustomMutableList<Int>) {
         repeat(100) {
             list.add(it)
         }
@@ -66,7 +66,7 @@ class NumbersArrayListTest {
 
     @ParameterizedTest
     @MethodSource("mutableListSource")
-    fun `When add value 1000 in the beginning then 1st element is 1000`(list: NumbersMutableList) {
+    fun `When add value 1000 in the beginning then 1st element is 1000`(list: CustomMutableList<Int>) {
         repeat(100) {
             list.add(it)
         }
@@ -76,7 +76,7 @@ class NumbersArrayListTest {
 
     @ParameterizedTest
     @MethodSource("mutableListSource")
-    fun `When add value 1000 in the end then size is increased`(list: NumbersMutableList) {
+    fun `When add value 1000 in the end then size is increased`(list: CustomMutableList<Int>) {
         repeat(100) {
             list.add(it)
         }
@@ -86,7 +86,7 @@ class NumbersArrayListTest {
 
     @ParameterizedTest
     @MethodSource("mutableListSource")
-    fun `When add value 1000 in the end then last element is 1000`(list: NumbersMutableList) {
+    fun `When add value 1000 in the end then last element is 1000`(list: CustomMutableList<Int>) {
         repeat(100) {
             list.add(it)
         }
@@ -96,7 +96,7 @@ class NumbersArrayListTest {
 
     @ParameterizedTest
     @MethodSource("mutableListSource")
-    fun `When 50th element removed then size decreased`(list: NumbersMutableList) {
+    fun `When 50th element removed then size decreased`(list: CustomMutableList<Int>) {
         repeat(100) {
             list.add(it)
         }
@@ -106,7 +106,7 @@ class NumbersArrayListTest {
 
     @ParameterizedTest
     @MethodSource("mutableListSource")
-    fun `When value 50 removed then size decreased`(list: NumbersMutableList) {
+    fun `When value 50 removed then size decreased`(list: CustomMutableList<Int>) {
         repeat(100) {
             list.add(it)
         }
@@ -116,7 +116,7 @@ class NumbersArrayListTest {
 
     @ParameterizedTest
     @MethodSource("mutableListSource")
-    fun `When value 50 removed with operator then size decreased`(list: NumbersMutableList) {
+    fun `When value 50 removed with operator then size decreased`(list: CustomMutableList<Int>) {
         repeat(100) {
             list.add(it)
         }
@@ -126,7 +126,7 @@ class NumbersArrayListTest {
 
     @ParameterizedTest
     @MethodSource("mutableListSource")
-    fun `When 50th element removed then next value at this position`(list: NumbersMutableList) {
+    fun `When 50th element removed then next value at this position`(list: CustomMutableList<Int>) {
         repeat(100) {
             list.add(it)
         }
@@ -136,7 +136,7 @@ class NumbersArrayListTest {
 
     @ParameterizedTest
     @MethodSource("mutableListSource")
-    fun `When clear list then size is 0`(list: NumbersMutableList) {
+    fun `When clear list then size is 0`(list: CustomMutableList<Int>) {
         repeat(100) {
             list.add(it)
         }
@@ -146,7 +146,7 @@ class NumbersArrayListTest {
 
     @ParameterizedTest
     @MethodSource("mutableListSource")
-    fun `When clear list and get 50th element then throw exception`(list: NumbersMutableList) {
+    fun `When clear list and get 50th element then throw exception`(list: CustomMutableList<Int>) {
         repeat(100) {
             list.add(it)
         }
@@ -158,7 +158,7 @@ class NumbersArrayListTest {
 
     @ParameterizedTest
     @MethodSource("mutableListSource")
-    fun `When get element with incorrect index element then throw exception`(list: NumbersMutableList) {
+    fun `When get element with incorrect index element then throw exception`(list: CustomMutableList<Int>) {
         repeat(100) {
             list.add(it)
         }
@@ -169,7 +169,7 @@ class NumbersArrayListTest {
 
     @ParameterizedTest
     @MethodSource("mutableListSource")
-    fun `When get number 50th element then result is correct`(list: NumbersMutableList) {
+    fun `When get number 50th element then result is correct`(list: CustomMutableList<Int>) {
         repeat(100) {
             list.add(it)
         }
@@ -178,6 +178,6 @@ class NumbersArrayListTest {
 
     companion object {
         @JvmStatic
-        fun mutableListSource() = listOf(NumbersArrayList(), NumbersLinkedList())
+        fun mutableListSource() = listOf(CustomArrayList<Int>(), CustomLinkedList<Int>())
     }
 }

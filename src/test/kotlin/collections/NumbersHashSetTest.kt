@@ -6,7 +6,7 @@ import kotlin.test.Test
 
 class NumbersHashSetTest {
 
-    private val elements = NumbersHashSet()
+    private val elements = CustomHashSet<Int>()
 
     @Test
     fun `When add 100 elements then size 100`() {

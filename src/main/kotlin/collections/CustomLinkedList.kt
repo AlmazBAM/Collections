@@ -1,18 +1,18 @@
 package collections
 
-class NumbersLinkedList(
-) : NumbersMutableList {
 
-    private var first: Node? = null
-    private var last: Node? = null
+class CustomLinkedList<T> : CustomMutableList<T> {
+
+    private var first: Node<T>? = null
+    private var last: Node<T>? = null
 
     override var size: Int = 0
         private set
 
-    override fun contains(number: Int): Boolean {
+    override fun contains(element: T): Boolean {
         var node = first
         repeat(size) {
-            if (node?.item == number) {
+            if (node?.item == element) {
                 return true
             } else {
                 node = node?.next
@@ -21,21 +21,21 @@ class NumbersLinkedList(
         return false
     }
 
-    override fun get(index: Int): Int {
+    override fun get(index: Int): T {
         return getNode(index).item
     }
 
-    override fun plus(number: Int) {
-        add(number)
+    override fun plus(element: T) {
+        add(element)
     }
 
-    override fun minus(number: Int) {
-        remove(number)
+    override fun minus(element: T) {
+        remove(element)
     }
 
-    override fun add(number: Int) {
+    override fun add(element: T) {
         val prevLast = last
-        last = Node(number, prev = prevLast)
+        last = Node(element, prev = prevLast)
         if (prevLast == null) {
             first = last
         } else {
@@ -44,14 +44,14 @@ class NumbersLinkedList(
         size++
     }
 
-    override fun add(index: Int, number: Int) {
+    override fun add(index: Int, element: T) {
         checkIndexForAdding(index)
         if (index == size) {
-            add(number)
+            add(element)
             return
         }
         if (index == 0) {
-            val node = Node(number, first)
+            val node = Node(element, first)
             first?.prev = node
             first = node
             size++
@@ -59,7 +59,7 @@ class NumbersLinkedList(
         }
         val before = getNode(index - 1)
         val after = before.next
-        val node = Node(number, after, before)
+        val node = Node(element, after, before)
         before.next = node
         after?.prev = node
         size++
@@ -71,10 +71,10 @@ class NumbersLinkedList(
         unlink(node)
     }
 
-    override fun remove(number: Int) {
+    override fun remove(element: T) {
         var node = first
         repeat(size) {
-            if (node?.item == number) {
+            if (node?.item == element) {
                 unlink(node)
                 return
             } else {
@@ -89,7 +89,7 @@ class NumbersLinkedList(
         size = 0
     }
 
-    private fun unlink(node: Node) {
+    private fun unlink(node: Node<T>) {
         val before = node.prev
         val after = node.next
 
@@ -104,7 +104,7 @@ class NumbersLinkedList(
         size--
     }
 
-    private fun getNode(index: Int): Node {
+    private fun getNode(index: Int): Node<T> {
         checkIndex(index)
         if (index == 0) return first!!
         if (index == size - 1) return last!!
@@ -134,10 +134,10 @@ class NumbersLinkedList(
             throw IndexOutOfBoundsException("Index: $index, Size: $size")
     }
 
-    class Node(
-        val item: Int,
-        var next: Node? = null,
-        var prev: Node? = null
+    class Node<T>(
+        val item: T,
+        var next: Node<T>? = null,
+        var prev: Node<T>? = null
     )
 
 }

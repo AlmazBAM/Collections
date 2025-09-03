@@ -2,17 +2,17 @@ package collections
 
 import kotlin.math.abs
 
-class NumbersHashSet : NumbersMutableSet {
+class CustomHashSet<T> : CustomMutableSet<T> {
 
-    var elements = arrayOfNulls<Node>(INITIAL_CAPACITY)
+    var elements = arrayOfNulls<Node<T>>(INITIAL_CAPACITY)
     override var size: Int = 0
         private set
 
-    override fun contains(number: Int): Boolean {
-        val position = getElementPosition(number, elements.size)
+    override fun contains(element: T): Boolean {
+        val position = getElementPosition(element, elements.size)
         var existedElement = elements[position]
         while (existedElement != null) {
-            if (existedElement.item == number) {
+            if (existedElement.item == element) {
                 return true
             } else {
                 existedElement = existedElement.next
@@ -21,15 +21,15 @@ class NumbersHashSet : NumbersMutableSet {
         return false
     }
 
-    override fun add(number: Int): Boolean {
+    override fun add(element: T): Boolean {
         increaseSize()
-        return add(number, elements).also { if (it) size++ }
+        return add(element, elements).also { if (it) size++ }
     }
 
-    override fun remove(number: Int) {
-        val position = getElementPosition(number, elements.size)
+    override fun remove(element: T) {
+        val position = getElementPosition(element, elements.size)
         val existedElement = elements[position] ?: return
-        if (existedElement.item == number) {
+        if (existedElement.item == element) {
             val after = existedElement.next
             if (after == null)
                 elements[position] = null
@@ -38,10 +38,10 @@ class NumbersHashSet : NumbersMutableSet {
             size--
             return
         }
-        var before: Node? = existedElement
+        var before: Node<T>? = existedElement
         while (before?.next != null) {
             val current = before.next
-            if (current?.item == number) {
+            if (current?.item == element) {
                 val after = current.next
                 before.next = after
                 size--
@@ -53,13 +53,13 @@ class NumbersHashSet : NumbersMutableSet {
     }
 
     override fun clear() {
-        elements = arrayOfNulls<Node>(INITIAL_CAPACITY)
+        elements = arrayOfNulls<Node<T>>(INITIAL_CAPACITY)
         size = 0
     }
 
     private fun increaseSize() {
         if (size.toFloat() / elements.size >= LOAD_FACTOR) {
-            val newArray = arrayOfNulls<Node>(elements.size * 2)
+            val newArray = arrayOfNulls<Node<T>>(elements.size * 2)
             elements.forEach {
                 var currentElement = it
                 while (currentElement != null) {
@@ -71,16 +71,16 @@ class NumbersHashSet : NumbersMutableSet {
         }
     }
 
-    private fun add(number: Int, array: Array<Node?>): Boolean {
-        val newNode = Node(number)
-        val nodePosition = getElementPosition(number, array.size)
+    private fun add(element: T, array: Array<Node<T>?>): Boolean {
+        val newNode = Node(element)
+        val nodePosition = getElementPosition(element, array.size)
         var existedNode = array[nodePosition]
         if (existedNode == null) {
             array[nodePosition] = newNode
             return true
         } else {
             while (true) {
-                if (existedNode?.item == number) {
+                if (existedNode?.item == element) {
                     return false
                 } else {
                     if (existedNode?.next == null) {
@@ -94,13 +94,13 @@ class NumbersHashSet : NumbersMutableSet {
         }
     }
 
-    private fun getElementPosition(number: Int, arraySize: Int): Int {
-        return abs(number % arraySize)
+    private fun getElementPosition(element: T, arraySize: Int): Int {
+        return abs(element.hashCode() % arraySize)
     }
 
-    data class Node(
-        val item: Int,
-        var next: Node? = null,
+    data class Node<T>(
+        val item: T,
+        var next: Node<T>? = null,
     )
 
     companion object {

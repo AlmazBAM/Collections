@@ -1,9 +1,9 @@
 package collections
 
-interface CustomMutableList<T> : CustomMutableCollection<T> {
+interface CustomMutableList<T> : CustomList<T>, CustomMutableCollection<T> {
     override val size: Int
     override fun contains(element: T): Boolean
-    operator fun get(index: Int): T
+    override operator fun get(index: Int): T
     operator fun plus(element: T)
     operator fun minus(element: T)
     override fun add(element: T): Boolean 

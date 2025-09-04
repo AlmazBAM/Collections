@@ -9,6 +9,8 @@ class CustomHashMap<K, V> : CustomMutableMap<K, V> {
     override var size: Int = 0
         private set
 
+    private var modCount = 0
+
     override val keys: CustomSet<K>
         get() = CustomHashSet<K>().apply {
             foreEach {
@@ -57,10 +59,12 @@ class CustomHashMap<K, V> : CustomMutableMap<K, V> {
 
     override fun put(key: K, value: V): V? {
         increaseSize()
+        modCount++
         return put(key, value, elements).also { if (it == null) size++ }
     }
 
     override fun remove(key: K): V? {
+        modCount++
         val position = getElementPosition(key, elements.size)
         val existedElement = elements[position] ?: return null
         if (existedElement.key == key) {
@@ -72,7 +76,7 @@ class CustomHashMap<K, V> : CustomMutableMap<K, V> {
         while (before?.next != null) {
             val removingElement = before.next
             if (removingElement?.key == key) {
-                before = removingElement.next
+                before.next = removingElement.next
                 size--
                 return removingElement.value
             } else {
@@ -83,8 +87,38 @@ class CustomHashMap<K, V> : CustomMutableMap<K, V> {
     }
 
     override fun clear() {
+        modCount++
         elements = arrayOfNulls<Node<K, V>>(INITIAL_CAPACITY)
         size = 0
+    }
+
+    fun keyIterator(): MutableIterator<K> {
+        return object : MutableIterator<K> {
+
+            private var nodeIndex = 0
+            private var nextNode = elements[nodeIndex]
+            private var nextIndex = 0
+            private val currentModCount = modCount
+
+            override fun hasNext(): Boolean {
+                return nextIndex < size
+            }
+
+            override fun next(): K {
+                if (modCount != currentModCount) throw ConcurrentModificationException()
+                while (nextNode == null) {
+                    nextNode = elements[++nodeIndex]
+                }
+                return nextNode?.key!!.also {
+                    nextIndex++
+                    nextNode = nextNode?.next
+                }
+            }
+
+            override fun remove() {
+
+            }
+        }
     }
 
     private inline fun foreEach(operation: (Node<K, V>) -> Unit) {

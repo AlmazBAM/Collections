@@ -8,6 +8,8 @@ class CustomHashSet<T> : CustomMutableSet<T> {
     override var size: Int = 0
         private set
 
+    private var modCount = 0
+
     override fun contains(element: T): Boolean {
         val position = getElementPosition(element, elements.size)
         var existedElement = elements[position]
@@ -22,11 +24,13 @@ class CustomHashSet<T> : CustomMutableSet<T> {
     }
 
     override fun add(element: T): Boolean {
+        modCount++
         increaseSize()
         return add(element, elements).also { if (it) size++ }
     }
 
     override fun remove(element: T) {
+        modCount++
         val position = getElementPosition(element, elements.size)
         val existedElement = elements[position] ?: return
         if (existedElement.item == element) {
@@ -72,6 +76,7 @@ class CustomHashSet<T> : CustomMutableSet<T> {
     }
 
     private fun add(element: T, array: Array<Node<T>?>): Boolean {
+        modCount++
         val newNode = Node(element)
         val nodePosition = getElementPosition(element, array.size)
         var existedNode = array[nodePosition]
@@ -100,12 +105,14 @@ class CustomHashSet<T> : CustomMutableSet<T> {
             private var nodeIndex = 0
             private var nextNode = elements[nodeIndex]
             private var nextIndex = 0
+            private val currentModCount = modCount
 
             override fun hasNext(): Boolean {
                 return nextIndex < size
             }
 
             override fun next(): T {
+                if (modCount != currentModCount) throw ConcurrentModificationException()
                 while (nextNode == null) {
                     nextNode = elements[++nodeIndex]
                 }

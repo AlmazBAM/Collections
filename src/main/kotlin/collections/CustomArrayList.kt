@@ -8,6 +8,8 @@ class CustomArrayList<T>(
 
     private var elements = arrayOfNulls<Any>(initialCapacity)
 
+    private var modCount = 0
+
     override var size: Int = 0
         private set
 
@@ -20,6 +22,7 @@ class CustomArrayList<T>(
     }
 
     override fun add(element: T): Boolean {
+        modCount++
         growIfNeeded()
         elements[size] = element
         size++
@@ -27,6 +30,7 @@ class CustomArrayList<T>(
     }
 
     override fun add(index: Int, element: T) {
+        modCount++
         checkIndexForAdding(index)
         growIfNeeded()
         System.arraycopy(elements, index, elements, index + 1, size - index)
@@ -39,6 +43,7 @@ class CustomArrayList<T>(
     }
 
     override fun remove(element: T) {
+        modCount++
         for (index in elements.indices) {
             if (elements[index] == element) {
                 removeAt(index)
@@ -48,6 +53,7 @@ class CustomArrayList<T>(
     }
 
     override fun removeAt(index: Int) {
+        modCount++
         checkIndex(index)
         System.arraycopy(elements, index + 1, elements, index, size - index - 1)
         size--
@@ -72,13 +78,14 @@ class CustomArrayList<T>(
         return object : MutableIterator<T> {
 
             private var nextIndex = 0
-
+            private val currentModCount = modCount
 
             override fun hasNext(): Boolean {
                 return nextIndex < size
             }
 
             override fun next(): T {
+                if (modCount != currentModCount) throw ConcurrentModificationException()
                 return elements[nextIndex++] as T
             }
 

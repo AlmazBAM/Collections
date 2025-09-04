@@ -19,10 +19,11 @@ class CustomArrayList<T>(
         return false
     }
 
-    override fun add(element: T) {
+    override fun add(element: T): Boolean {
         growIfNeeded()
         elements[size] = element
         size++
+        return true
     }
 
     override fun add(index: Int, element: T) {
@@ -65,6 +66,22 @@ class CustomArrayList<T>(
     override operator fun get(index: Int): T {
         checkIndex(index)
         return elements[index]!! as T
+    }
+
+    override fun iterator(): Iterator<T> {
+        return object : Iterator<T> {
+
+            private var nextIndex = 0
+
+
+            override fun hasNext(): Boolean {
+                return nextIndex < size
+            }
+
+            override fun next(): T {
+                return elements[nextIndex++] as T
+            }
+        }
     }
 
     private fun checkIndexForAdding(index: Int) {

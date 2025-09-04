@@ -1,9 +1,9 @@
 package collections
 
-interface CustomMutableSet <T> {
-    val size: Int
-    fun contains(element: T): Boolean
-    fun add(element: T): Boolean
-    fun remove(element: T)
-    fun clear()
+interface CustomMutableSet <T> : CustomMutableCollection<T> {
+    override val size: Int
+    override fun contains(element: T): Boolean
+    override fun add(element: T): Boolean
+    override fun remove(element: T)
+    override fun clear()
 }

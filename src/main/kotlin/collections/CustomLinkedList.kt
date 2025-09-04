@@ -33,7 +33,7 @@ class CustomLinkedList<T> : CustomMutableList<T> {
         remove(element)
     }
 
-    override fun add(element: T) {
+    override fun add(element: T): Boolean {
         val prevLast = last
         last = Node(element, prev = prevLast)
         if (prevLast == null) {
@@ -42,6 +42,7 @@ class CustomLinkedList<T> : CustomMutableList<T> {
             prevLast.next = last
         }
         size++
+        return true
     }
 
     override fun add(index: Int, element: T) {
@@ -63,6 +64,23 @@ class CustomLinkedList<T> : CustomMutableList<T> {
         before.next = node
         after?.prev = node
         size++
+    }
+
+    override fun iterator(): Iterator<T> {
+        return object : Iterator<T> {
+
+            private var nextNode = first
+
+            override fun hasNext(): Boolean {
+                return nextNode != null
+            }
+
+            override fun next(): T {
+                return nextNode?.item!!.also {
+                    nextNode = nextNode?.next
+                }
+            }
+        }
     }
 
     override fun removeAt(index: Int) {

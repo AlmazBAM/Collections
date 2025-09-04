@@ -3,10 +3,10 @@ package collections
 import kotlin.random.Random
 
 fun main() {
-    val a = CustomHashSet<Int>()
+    val a = CustomArrayList<Int>()
     repeat(100) {
-        a.add(Random.nextInt(1000))
+        a.add(it)
     }
 
-    a.elements.forEach(::println)
+    a.forEach(::println)
 }

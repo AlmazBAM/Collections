@@ -94,8 +94,8 @@ class CustomHashSet<T> : CustomMutableSet<T> {
         }
     }
 
-    override fun iterator(): Iterator<T> {
-        return object : Iterator<T> {
+    override fun iterator(): MutableIterator<T> {
+        return object : MutableIterator<T> {
 
             private var nodeIndex = 0
             private var nextNode = elements[nodeIndex]
@@ -113,6 +113,10 @@ class CustomHashSet<T> : CustomMutableSet<T> {
                     nextIndex++
                     nextNode = nextNode?.next
                 }
+            }
+
+            override fun remove() {
+
             }
         }
     }

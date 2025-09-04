@@ -68,8 +68,8 @@ class CustomArrayList<T>(
         return elements[index]!! as T
     }
 
-    override fun iterator(): Iterator<T> {
-        return object : Iterator<T> {
+    override fun iterator(): MutableIterator<T> {
+        return object : MutableIterator<T> {
 
             private var nextIndex = 0
 
@@ -80,6 +80,10 @@ class CustomArrayList<T>(
 
             override fun next(): T {
                 return elements[nextIndex++] as T
+            }
+
+            override fun remove() {
+
             }
         }
     }

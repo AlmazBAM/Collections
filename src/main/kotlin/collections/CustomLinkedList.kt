@@ -66,8 +66,8 @@ class CustomLinkedList<T> : CustomMutableList<T> {
         size++
     }
 
-    override fun iterator(): Iterator<T> {
-        return object : Iterator<T> {
+    override fun iterator(): MutableIterator<T> {
+        return object : MutableIterator<T> {
 
             private var nextNode = first
 
@@ -79,6 +79,10 @@ class CustomLinkedList<T> : CustomMutableList<T> {
                 return nextNode?.item!!.also {
                     nextNode = nextNode?.next
                 }
+            }
+
+            override fun remove() {
+
             }
         }
     }

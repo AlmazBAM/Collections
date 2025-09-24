@@ -1,7 +1,7 @@
 package collections
 
-interface CustomList<T> : CustomCollection<T> {
+interface CustomList<out T> : CustomCollection<T> {
     override val size: Int
-    override fun contains(element: T): Boolean
+    override fun contains(element: @UnsafeVariance T): Boolean
     operator fun get(index: Int): T
 }
